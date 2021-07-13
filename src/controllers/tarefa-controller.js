@@ -1,6 +1,6 @@
 const task = 'ler'
 
-function tarefa(app){
+function tarefa(app, bd){
     app.get('/usuario/tarefa', (req, res) => {
         res.send(`Rota ativada com GET e recurso ${task}`)
       })
