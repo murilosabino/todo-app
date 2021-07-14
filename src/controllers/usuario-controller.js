@@ -5,11 +5,31 @@ function usuario(app, bd, user){
     app.get('/usuario', (req, res) => {        
         res.send(bd.users)
       })
-    
-      app.post('/usuario', (req, res, next) => {
-        let novoUsuario = new user(req.body.nome, req.body.email, req.body.senha);
+
+    app.get('/usuario/:email', (req, res) => {
+      let filtrado = bd.users.filter((el) => { 
+        return el.email === req.params.email
+        })
+      res.json({
+        result: filtrado
+      })
+    })
+
+    app.post('/usuario', (req, res, next) => {
+        const {nome, email, senha} = req.body
+        let novoUsuario = new user(nome, email, senha);
         bd.users.push(novoUsuario)
-        res.send('usuario criado')
+        res.json({'message':'usuario criado'})
+      })
+
+    app.delete('/usuario/:email', (req, res)=>{
+        let parametroEmail = req.params.email
+        bd.users = bd.users.filter((item)=>{
+          return item.email !== parametroEmail
+        })
+        res.json({
+          message: `O usuario ${parametroEmail} foi deletado`
+        })
       })
 }
 
